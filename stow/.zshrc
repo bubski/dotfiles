@@ -19,6 +19,10 @@ export POWERLEVEL9K_CONFIG_FILE="${HOME}/.config/bubski-dotfiles/p10k/p10k.zsh"
 # Path to your oh-my-zsh installation.
 export ZSH="${HOME}/.config/bubski-dotfiles/oh-my-zsh"
 
+# Do not place .zcompdump files in the home directory.
+# https://stackoverflow.com/q/62931101
+export ZSH_COMPDUMP=$ZSH/cache/.zcompdump-$HOST
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
