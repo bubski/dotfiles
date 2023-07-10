@@ -83,6 +83,7 @@ install_if_needed "${tools[@]}"
 git clone --recurse-submodules --shallow-submodules "$repo_url" "$clone_path"
 [[ $? -eq 0 ]] || bail_with_message "Failed to clone repo."
 
+mkdir ~/.config
 cd "$clone_path" && stow stow || bail_with_message "Stow failed."
 
 sudo chsh -s "$(command -v zsh)" "$USER"
