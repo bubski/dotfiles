@@ -1,5 +1,3 @@
-#!/bin/bash
-
 FMT_RED=$(printf '\033[31m')
 FMT_GREEN=$(printf '\033[32m')
 FMT_YELLOW=$(printf '\033[33m')
