@@ -1,0 +1,29 @@
+#!/usr/bin/env zsh
+
+fmt_yellow='\033[33m'
+fmt_green='\033[32m'
+fmt_reset='\033[0m'
+
+match=$(sudo grep 'Defaults.*timestamp_timeout=\-1' /etc/sudoers)
+
+if [[ ! -z "$match" ]]
+then
+    echo "${fmt_yellow}${match}${fmt_reset}"
+    echo 'already set in /etc/sudoers'
+    exit 0
+fi
+
+before=$(sudo cat /etc/sudoers)
+
+#sudo grep 'Defaults.*timestamp_timeout=\-1' /etc/sudoers > /dev/null && {echo 'timestamp_timeout=-1 already set' ; exit 0}
+printf "Defaults\ttimestamp_timeout=-1\n" | (sudo EDITOR="tee --append" visudo > /dev/null)
+
+after=$(sudo cat /etc/sudoers)
+
+echo "${fmt_green}Defaults\ttimestamp_timeout=-1${fmt_reset}"
+echo "added to /etc/sudoers"
+
+#diff <(echo "$before") <(echo "$after") --color --side-by-side
+#diff <(echo "$before") <(echo "$after") --color -U 3
+
+#echo 'timestamp_timeout=-1 set'

@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+
+date=$(date '+%Y-%m-%d at %H-%M-%S')
+mkdir -p "${HOME}/Documents/Notes"
+path="${HOME}/Documents/Notes/$date.txt"
+echo "$path" >&2
+touch "$path"
+open -a '/Applications/Sublime Text.app' "$path"

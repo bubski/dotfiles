@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+
+if [ -z "$1" ]
+then
+  echo "missing PR number"
+  return 1
+fi
+if [[ -n $(git status --short --ignore-submodules) ]]
+then
+  echo "git status not clean"
+  return 1
+fi
+ref_name="pull/$1/head"
+git fetch origin "$ref_name" && git checkout FETCH_HEAD

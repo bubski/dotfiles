@@ -1,10 +1,8 @@
-# if [[ "$BUBDOT" ]]; then
-#   echo "BUBDOT already set to: ${BUBDOT}"
-#   return 1
-# fi
 [[ "$TERM" == 'xterm-256color' || "$TERM" == 'tmux-256color' ]] || echo "\e[93mPrompt may not look right: 'TERM=$TERM'.\nExecute: 'export TERM=xterm-256color' to fix.\e[0m" >&2
 
-export POWERLEVEL9K_CONFIG_FILE="${HOME}/.config/bubski-dotfiles/p10k/p10k.zsh"
+export BUB_DOT="${HOME}/.config/bubski-dotfiles"
+
+export POWERLEVEL9K_CONFIG_FILE="${BUB_DOT}/p10k/p10k.zsh"
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -17,7 +15,7 @@ export POWERLEVEL9K_CONFIG_FILE="${HOME}/.config/bubski-dotfiles/p10k/p10k.zsh"
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="${HOME}/.config/bubski-dotfiles/oh-my-zsh"
+export ZSH="${BUB_DOT}/oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -94,7 +92,7 @@ export HISTSIZE=50000 # Refers to the number of commands that are loaded into me
 # HISTFILE # Refers to the path/location of the history file
 
 # Would you like to use another custom folder than $ZSH/custom?
-ZSH_CUSTOM="${HOME}/.config/bubski-dotfiles/oh-my-zsh-custom"
+ZSH_CUSTOM="${BUB_DOT}/oh-my-zsh-custom"
 
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
@@ -130,10 +128,15 @@ export LANG=en_US.UTF-8
 # To customize prompt, run `p10k configure` or edit POWERLEVEL9K_CONFIG_FILE.
 [[ -f "$POWERLEVEL9K_CONFIG_FILE" ]] && source "$POWERLEVEL9K_CONFIG_FILE"
 
-source "${HOME}/.config/bubski-dotfiles/zshrc-$(uname).zsh"
+# Include hidden files/directories in tab completion.
+setopt globdots
 
-source "${HOME}/.config/bubski-dotfiles/fzf/fzf.zsh"
-source "${HOME}/.config/bubski-dotfiles/aliases/aliases.zsh"
+export PATH="${HOME}/.local/bin:${PATH}"
+
+source "${BUB_DOT}/zshrc-$(uname).zsh"
+
+source "${BUB_DOT}/fzf/fzf.zsh"
+source "${BUB_DOT}/aliases/aliases.zsh"
 
 [[ -f "${HOME}/.zshrc-local" ]] && source "${HOME}/.zshrc-local"
 

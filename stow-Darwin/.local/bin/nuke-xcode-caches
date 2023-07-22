@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+
+rm -fr ~/Library/Developer/Xcode/DerivedData
+rm -fr ~/Library/Caches/com.apple.dt.Xcode
+rm -fr ~/Library/Caches/com.apple.dt.Xcode.sourcecontrol.Git

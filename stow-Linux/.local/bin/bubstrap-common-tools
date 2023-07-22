@@ -1,0 +1,26 @@
+#!/usr/bin/env zsh
+
+_symlink_fd_find () {
+    # The binary is called fdfind as the binary name fd is already used by another package.
+    local_bin="${HOME}/.local/bin"
+    mkdir -p "${local_bin}"
+    ln -s "$(which fdfind)" "${local_bin}/fd"
+}
+
+sudo apt update
+
+packages=(
+    'bat'
+    'curl'
+    'fd-find'
+    'fzf'
+    'htop'
+    'nano'
+    'neofetch'
+    'ripgrep'
+    'tmux'
+    'tree'
+)
+sudo apt install -y "${packages[@]}"
+
+_symlink_fd_find
