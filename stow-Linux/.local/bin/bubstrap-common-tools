@@ -7,6 +7,12 @@ _symlink_fd_find () {
     ln -s "$(which fdfind)" "${local_bin}/fd"
 }
 
+_symlink_bat () {
+    local_bin="${HOME}/.local/bin"
+    mkdir -p "${local_bin}"
+    ln -s "$(which batcat)" "${local_bin}/bat"
+}
+
 sudo apt update
 
 packages=(
@@ -24,3 +30,4 @@ packages=(
 sudo apt install -y "${packages[@]}"
 
 _symlink_fd_find
+_symlink_bat
