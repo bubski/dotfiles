@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
 date=$(date '+%Y-%m-%d at %H-%M-%S')
-dir="${HOME}/Documents/from\ Desktop/${date}"
+dir="${HOME}/Documents/from Desktop/${date}"
 mkdir -p $dir
 mv ~/Desktop/* $dir/
