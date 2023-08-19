@@ -5,6 +5,8 @@ FMT_YELLOW=$(printf '\033[33m')
 FMT_BOLD=$(printf '\033[1m')
 FMT_RESET=$(printf '\033[0m')
 
+clone_path="${HOME}/.dotfiles"
+
 command_exists() {
     command -v "$@" &>/dev/null
 }
@@ -93,7 +95,6 @@ main() {
     local clone_path
     local tools
     repo_url='https://github.com/bubski/dotfiles.git'
-    clone_path="${HOME}/.dotfiles"
 
     assert_user_can_sudo
 
