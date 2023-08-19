@@ -135,7 +135,9 @@ setopt globdots
 
 export PATH="${HOME}/.local/bin:${PATH}"
 
-source "${BUB_DOT}/zshrc-$(uname).zsh"
+if [[ $(uname) == 'Darwin' ]]; then
+    export EDITOR='/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl -nw'
+fi
 
 source "${BUB_DOT}/fzf/fzf.zsh"
 source "${BUB_DOT}/aliases/aliases.zsh"

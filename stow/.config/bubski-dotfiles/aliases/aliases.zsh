@@ -1,7 +1,12 @@
 alias cat='bat --style=plain --paging=never'
 alias glog="git log --graph --pretty=format:'%Cgreen%ad%Creset %C(auto)%h%d %s %C(bold black)<%aN>%Creset' --date=format-local:'%Y-%m-%d %H:%M (%a)'"
 
-alias l1='ls -1'
-alias ll1='ls -1a'
+if [[ $(uname) == 'Darwin' ]]; then
+    alias ls='ls -1G'
+    alias s='/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl'
+    alias hop='hopperv4 -e'
+fi
 
-source "${HOME}/.config/bubski-dotfiles/aliases/aliases-$(uname).zsh"
+if [[ $(uname) == 'Linux' ]]; then
+    alias ls='ls -1 --color=tty'
+fi
