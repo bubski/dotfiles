@@ -77,18 +77,14 @@ is_sourced() {
 }
 
 _stow() {
-    set -x
-    stow -d "$clone_path" -t "$HOME" 'stow' "stow-$(uname)" "$@"
-    set +x
+    stow "$@" -v -d "$clone_path" -t "$HOME" 'stow' "stow-$(uname)"
 }
 
 do_stow() {
-    echo "stowing"
     _stow
 }
 
 do_unstow() {
-    echo "unstowing"
     _stow -D
 }
 
