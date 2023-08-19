@@ -13,6 +13,7 @@
 	show-merge = !sh -c 'merge=$(git find-merge $0 $1) && [ -n \"$merge\" ] && git show $merge'
 	push-to-own-repo = !git push -u bubski $(git rev-parse --abbrev-ref HEAD)
 	branches-by-commit-date = branch --sort=-committerdate
+	fc = !"selection=$(git branch --sort=-committerdate --format '%(refname:short)' | fzf --query \"'$(date '+%Y-%m')\" --no-sort --preview='git log {} --color=always -n 10') && git checkout \"$selection\""
 
 [fetch]
 	parallel = 0
