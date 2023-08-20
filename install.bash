@@ -76,17 +76,16 @@ do_unstow() {
 
 main() {
     local repo_url
-    local clone_path
     local tools
+
     repo_url='https://github.com/bubski/dotfiles.git'
-
-    assert_user_can_sudo
-
     tools=(
         'git'
         'stow'
         'zsh'
     )
+
+    assert_user_can_sudo
 
     install_if_needed "${tools[@]}"
 
