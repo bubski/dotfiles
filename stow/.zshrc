@@ -1,5 +1,9 @@
 [[ "$TERM" == 'xterm-256color' || "$TERM" == 'tmux-256color' ]] || echo "\e[93mPrompt may not look right: 'TERM=$TERM'.\nExecute: 'export TERM=xterm-256color' to fix.\e[0m" >&2
 
+bubdot::update() {
+    bubdot-update && source ~/.zshrc
+}
+
 export BUB_DOT="${HOME}/.config/bubski-dotfiles"
 
 export POWERLEVEL9K_CONFIG_FILE="${BUB_DOT}/p10k/p10k.zsh"
