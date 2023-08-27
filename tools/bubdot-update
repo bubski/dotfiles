@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+
+
 repo_root=$(git -C "$BUB_DOT" rev-parse --show-toplevel)
 
 log() {
