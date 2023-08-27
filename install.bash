@@ -98,10 +98,8 @@ main() {
 
     sudo chsh -s "$(command -v zsh)" "$USER" || bail_with_message "Changing default shell failed."
 
-    cat <<EOF
-${fmt_green}Installation complete.
-Relog, or execute: ${fmt_yellow}SHELL=$(command -v zsh) zsh${fmt_reset}
-EOF
+    echo "${FMT_GREEN}Installation complete.${FMT_RESET}"
+    SHELL=$(command -v zsh) zsh
 }
 
 if [[ ${BASH_SOURCE[0]} == "${0}" ]]; then
