@@ -53,7 +53,7 @@ echo 1
 (source "${repo_root}/install.bash" do_unstow) || bail 'Unstow failed.'
 echo 2
 #_git checkout "$to_revision" || bail "Failed to check out revision $to_revision."
-_git pull || (source "${repo_root}/install.bash" do_stow); bail "git pull failed"
+_git pull || (echo restowing; source "${repo_root}/install.bash" do_stow); bail "git pull failed"
 echo 3
 _git submodule update --init --recursive || recover_to_revision "$from_revision"
 echo 4
