@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+
+log() {
+    echo "$@" >&2
+}
+
+bail() {
+    log "$@"
+    exit 1
+}
+
+_git() {
+    git --no-pager -C "$BUB_DOT" "$@"
+}
+
+assert_clean_status() {
+    local status
+    status="$(git -C "$BUB_DOT" status --porcelain)"
+    if [[ -z "$status" ]]
+    then
+        echo "git status clean"
+    else
+        bail "git status not clean at $BUB_DOT:$endl$status"
+    fi
+}
+
+recover_to_revision() {
+    { _git checkout "$1" || _git reset --hard "$1"; } && _git submodule update --init --recursive
+}
+
+readonly endl=$'\n'
+
+repo_root=$(_git rev-parse --show-toplevel)
+
+assert_clean_status
+
+from_revision=$(_git rev-parse HEAD)
+to_revision=$(_git rev-parse '@{upstream}')
+ahead_count=$(_git rev-list --count '@{u}..HEAD')
+behind_count=$(_git rev-list --count 'HEAD..@{u}')
+
+_git fetch >&2
+
+echo "Switching"
+echo "from: $from_revision"
+echo "  to: $to_revision"
+
+_git log --oneline --no-decorate 'HEAD..@{upstream}'
+_git diff --compact-summary 'HEAD..@{upstream}'
+
+(source "${repo_root}/install.bash do_unstow") || bail 'Unstow failed.'
+_git checkout "$to_revision" || bail "Failed to check out revision $to_revision."
+_git submodule update --init --recursive || recover_to_revision "$from_revision"
+(source "${repo_root}/install.bash do_unstow") || bail 'FATAL ERROR: Stow failed and could not recover to the original state.'
