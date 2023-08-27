@@ -3,7 +3,7 @@
 export BUB_DOT="${HOME}/.config/bubski-dotfiles"
 
 bubdot::update() {
-    "$(git -C ${BUB_DOT} rev-parse --show-toplevel)/tools/bubdot-update" && source ~/.zshrc
+    "$(git -C ${BUB_DOT} rev-parse --show-toplevel)/tools/bubdot-update" && exec zsh
 }
 
 export POWERLEVEL9K_CONFIG_FILE="${BUB_DOT}/p10k/p10k.zsh"
