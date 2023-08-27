@@ -132,7 +132,7 @@ export LC_ALL=en_US.UTF-8
 # For a full list of active aliases, run `alias`.
 
 # To customize prompt, run `p10k configure` or edit POWERLEVEL9K_CONFIG_FILE.
-[[ -f "$POWERLEVEL9K_CONFIG_FILE" ]] && source "$POWERLEVEL9K_CONFIG_FILE"
+[[ ! -f "$POWERLEVEL9K_CONFIG_FILE" ]] || source "$POWERLEVEL9K_CONFIG_FILE"
 
 # Include hidden files/directories in tab completion.
 setopt globdots
@@ -146,7 +146,7 @@ fi
 source "${BUB_DOT}/fzf/fzf.zsh"
 source "${BUB_DOT}/aliases/aliases.zsh"
 
-[[ -f "${HOME}/.zshrc-local" ]] && source "${HOME}/.zshrc-local"
+[[ ! -f "${HOME}/.zshrc-local" ]] || source "${HOME}/.zshrc-local"
 
 # git_ls_dir_fzf() { LBUFFER+=$(git ls-files | sed 's,/[^/]*$,,' | sort | uniq | fzf) }
 # zle -N git_ls_dir_fzf
