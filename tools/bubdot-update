@@ -48,7 +48,7 @@ echo "  to: $to_revision"
 _git log --oneline --no-decorate 'HEAD..@{upstream}'
 _git diff --compact-summary 'HEAD..@{upstream}'
 
-(source "${repo_root}/install.bash do_unstow") || bail 'Unstow failed.'
+(source "${repo_root}/install.bash" do_unstow) || bail 'Unstow failed.'
 _git checkout "$to_revision" || bail "Failed to check out revision $to_revision."
 _git submodule update --init --recursive || recover_to_revision "$from_revision"
-(source "${repo_root}/install.bash do_unstow") || bail 'FATAL ERROR: Stow failed and could not recover to the original state.'
+(source "${repo_root}/install.bash" do_unstow) || bail 'FATAL ERROR: Stow failed and could not recover to the original state.'
