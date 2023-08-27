@@ -48,6 +48,7 @@ echo "  to: $to_revision"
 _git log --oneline --no-decorate 'HEAD..@{upstream}'
 _git diff --compact-summary 'HEAD..@{upstream}'
 
+echo "repo_root: ${repo_root}"
 echo 1
 (source "${repo_root}/install.bash" do_unstow) || bail 'Unstow failed.'
 echo 2
