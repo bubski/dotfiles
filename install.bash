@@ -67,6 +67,8 @@ _stow() {
 }
 
 do_stow() {
+    mkdir ~/.config
+    mkdir -p ~/.local/bin
     _stow
 }
 
@@ -91,8 +93,6 @@ main() {
 
     git clone --recurse-submodules --shallow-submodules "$repo_url" "$clone_path" || bail_with_message "Failed to clone repo."
 
-    mkdir ~/.config
-    mkdir -p ~/.local/bin
     do_stow
     stow -d "$clone_path" -t "$HOME" 'stow' "stow-$(uname)" || bail_with_message 'Stow failed.'
 
