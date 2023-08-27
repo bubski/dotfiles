@@ -63,19 +63,6 @@ install_if_needed() {
     done
 }
 
-is_sourced() {
-    if [[ ${BASH_SOURCE[0]} == "${0}" ]]; then
-        # Script is being executed directly.
-        return 1
-    elif [[ -n ${BASH_SOURCE[0]} ]]; then
-        # Script is being sourced.
-        return 0
-    else
-        # Script is executed inline (e.g. via bash -c).
-        return 1
-    fi
-}
-
 _stow() {
     stow "$@" -v -d "$clone_path" -t "$HOME" 'stow' "stow-$(uname)"
 }
@@ -119,4 +106,9 @@ Relog, or execute: ${FMT_YELLOW}SHELL=$(command -v zsh) zsh${FMT_RESET}
 EOF
 }
 
-is_sourced || main
+if [[ -z "$@" ]]
+then
+    echo "foo"
+else
+    "$*"
+fi
