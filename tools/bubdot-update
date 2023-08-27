@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+repo_root=$(git -C "$BUB_DOT" rev-parse --show-toplevel)
+
 log() {
     echo "$@" >&2
 }
@@ -10,7 +12,7 @@ bail() {
 }
 
 _git() {
-    git --no-pager -C "$BUB_DOT" "$@"
+    git --no-pager -C "$repo_root" "$@"
 }
 
 assert_clean_status() {
@@ -29,8 +31,6 @@ recover_to_revision() {
 }
 
 readonly endl=$'\n'
-
-repo_root=$(_git rev-parse --show-toplevel)
 
 assert_clean_status
 
