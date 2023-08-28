@@ -102,13 +102,9 @@ main() {
     SHELL=$(command -v zsh) zsh
 }
 
-if [[ ${BASH_SOURCE[0]} == "${0}" ]]; then
-    # Script is being executed directly.
-    main
-elif [[ -z ${BASH_SOURCE[0]} ]]; then
-    # Script is executed inline (e.g. via bash -c).
+if [[ -z "$@" ]]
+then
     main
 else
-    # Script is being sourced.
-    true
+    "$*"
 fi
