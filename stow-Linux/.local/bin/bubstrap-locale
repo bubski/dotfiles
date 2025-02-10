@@ -5,14 +5,10 @@ set -e
 main() {
     echo 'Defaulting to LANG=C.UTF-8.'
     assert_root
-    install_if_needed locales grep
+    install_if_needed locale locales
+    install_if_needed grep grep
     generate_locale_if_needed
     update-locale LANG=C.UTF-8
-}
-
-bail() {
-  echo "$@"
-  exit 1
 }
 
 assert_root() {
@@ -20,9 +16,7 @@ assert_root() {
 }
 
 install_if_needed() {
-    for cmd in "$@"; do
-        command -v "$cmd" $>/dev/null || apt install -y "$cmd"
-    done
+    command -v "$cmd" $>/dev/null || apt install -y "$cmd"
 }
 
 generate_locale_if_needed() {
