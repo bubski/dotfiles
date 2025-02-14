@@ -1,8 +1,10 @@
-FMT_RED=$(echo -e '\e[31m')
-FMT_GREEN=$(echo -e '\e[32m')
-FMT_YELLOW=$(echo -e '\e[33m')
-FMT_BOLD=$(echo -e '\e[1m')
-FMT_RESET=$(echo -e '\e[0m')
+#!/usr/bin/env bash
+
+FMT_RED=$(echo -e '\033[1;31m')
+FMT_GREEN=$(echo -e '\033[1;32m')
+FMT_YELLOW=$(echo -e '\033[1;33m')
+FMT_BOLD=$(echo -e '\033[1;1m')
+FMT_RESET=$(echo -e '\033[1;0m')
 
 set -e
 
