@@ -1,16 +1,19 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
-_symlink_fd_find () {
+FMT_CYAN=$(echo -e '\e[36m')
+FMT_RESET=$(echo -e '\e[0m')
+
+symlink_fd_find() {
     # The binary is called fdfind as the binary name fd is already used by another package.
-    local_bin="${HOME}/.local/bin"
-    mkdir -p "${local_bin}"
-    ln -s "$(which fdfind)" "${local_bin}/fd"
+    local cmd="sudo ln -s '$(which fdfind)' /usr/local/bin/fd"
+    echo "${FMT_CYAN}${cmd}${FMT_RESET}"
+    sudo ${cmd}
 }
 
-_symlink_bat () {
-    local_bin="${HOME}/.local/bin"
-    mkdir -p "${local_bin}"
-    ln -s "$(which batcat)" "${local_bin}/bat"
+symlink_bat() {
+    local cmd="sudo ln -s '$(which batcat)' /usr/local/bin/bat"
+    echo "${FMT_CYAN}${cmd}${FMT_RESET}"
+    sudo ${cmd}
 }
 
 sudo apt update
@@ -29,5 +32,5 @@ packages=(
 )
 sudo apt install -y "${packages[@]}"
 
-_symlink_fd_find
-_symlink_bat
+symlink_fd_find
+symlink_bat
