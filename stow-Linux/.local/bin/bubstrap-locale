@@ -1,3 +1,36 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
-{locale --all-locales | grep 'en_US.utf8'} &> /dev/null || sudo locale-gen 'en_US.UTF-8'
+set -e
+
+main() {
+    echo 'Defaulting to LANG=C.UTF-8.'
+    assert_root
+    install_if_needed locales grep
+    generate_locale_if_needed
+    update-locale LANG=C.UTF-8
+}
+
+bail() {
+  echo "$@"
+  exit 1
+}
+
+assert_root() {
+    [[ $EUID -eq 0 ]] || bail 'Must run as root.'
+}
+
+install_if_needed() {
+    for cmd in "$@"; do
+        command -v "$cmd" $>/dev/null || apt install -y "$cmd"
+    done
+}
+
+generate_locale_if_needed() {
+    { locale --all-locales | grep -F '^C.utf8$'; } &>/dev/null || return 0
+
+    # https://stackoverflow.com/a/38553499/1856661
+    sed -i -e 's/# C.UTF-8 UTF-8/C.UTF-8 UTF-8/' /etc/locale.gen
+    dpkg-reconfigure --frontend=noninteractive locales
+}
+
+main
