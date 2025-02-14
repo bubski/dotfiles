@@ -11,9 +11,9 @@ set -e
 main() {
     parse_args "$@"
     SCRIPT_DIR=$(dirname "${BASH_SOURCE[0]}")
-    BUBIFY_PATH=$(git -C "${SCRIPT_DIR}" rev-parse --show-toplevel)
+    BUBASH_PATH=$(git -C "${SCRIPT_DIR}" rev-parse --show-toplevel)
 
-    cd "${BUBIFY_PATH}/stow"
+    cd "${BUBASH_PATH}/stow"
     handle_packages
 
     echo "${FMT_GREEN}Installation complete.${FMT_RESET}"
@@ -23,11 +23,11 @@ parse_args() {
     while [[ $# -gt 0 ]]; do
       case $1 in
         -u|--undo)
-          BUBIFY_UNDO="1"
+          BUBASH_UNDO="1"
           shift
           ;;
         -n|--dry-run)
-          BUBIFY_DRY_RUN="1"
+          BUBASH_DRY_RUN="1"
           shift
           ;;
         *)
@@ -45,32 +45,32 @@ handle_packages() {
     for path in */stow.conf; do
         package=$(dirname "${path}")
 
-        BUBIFY_LINUX=
-        BUBIFY_MAC=
-        BUBIFY_MKDIR=()
+        BUBASH_LINUX=
+        BUBASH_MAC=
+        BUBASH_MKDIR=()
         source "${package}/stow.conf"
 
         should_skip && continue
 
         packages+=("${package}")
-        mkdirs+=("${BUBIFY_MKDIR[@]}")
+        mkdirs+=("${BUBASH_MKDIR[@]}")
     done
 
-    if [[ "${BUBIFY_DRY_RUN}" != 1 && "${BUBIFY_UNDO}" != 1 ]]; then
+    if [[ "${BUBASH_DRY_RUN}" != 1 && "${BUBASH_UNDO}" != 1 ]]; then
         mkdir -p $(printf "${HOME}/%q " "${mkdirs[@]}")
     fi
 
     local cmd=(stow -v --ignore=stow\\.conf)
-    [[ "${BUBIFY_DRY_RUN}" == 1 ]] && cmd+=(-n)
-    [[ "${BUBIFY_UNDO}" == 1 ]] && cmd+=(-D)
+    [[ "${BUBASH_DRY_RUN}" == 1 ]] && cmd+=(-n)
+    [[ "${BUBASH_UNDO}" == 1 ]] && cmd+=(-D)
     cmd+=(-t "${HOME}" "${packages[@]}")
     eval $(printf "%q " "${cmd[@]}")
 }
 
 should_skip() {
     case $(uname -s) in
-      Linux) [[ "${BUBIFY_LINUX}" != 1 ]] ;;
-      Darwin) [[ "${BUBIFY_MAC}" != 1 ]] ;;
+      Linux) [[ "${BUBASH_LINUX}" != 1 ]] ;;
+      Darwin) [[ "${BUBASH_MAC}" != 1 ]] ;;
       *) bail "Unexpected uname: $os" ;;
     esac
 }

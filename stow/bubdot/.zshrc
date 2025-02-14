@@ -1,12 +1,8 @@
 [[ "$TERM" == 'xterm-256color' || "$TERM" == 'tmux-256color' ]] || echo "\e[93mPrompt may not look right: 'TERM=$TERM'.\nExecute: 'export TERM=xterm-256color' to fix.\e[0m" >&2
 
-export BUBDOT="${HOME}/.local/lib/bubdot"
+export BUBASH_HOME="${HOME}/.local/lib/bubash"
 
-bubdot::update() {
-    "$(git -C "${BUBDOT}" rev-parse --show-toplevel)/tools/bubdot-update" && exec zsh
-}
-
-export POWERLEVEL9K_CONFIG_FILE="${BUBDOT}/base/p10k/p10k.zsh"
+export POWERLEVEL9K_CONFIG_FILE="${BUBASH_HOME}/base/p10k/p10k.zsh"
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -19,9 +15,9 @@ export POWERLEVEL9K_CONFIG_FILE="${BUBDOT}/base/p10k/p10k.zsh"
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="${BUBDOT}/base/oh-my-zsh"
+export ZSH="${BUBASH_HOME}/base/oh-my-zsh"
 # Would you like to use another custom folder than $ZSH/custom?
-ZSH_CUSTOM="${BUBDOT}/base/oh-my-zsh-custom"
+ZSH_CUSTOM="${BUBASH_HOME}/base/oh-my-zsh-custom"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -126,7 +122,7 @@ source $ZSH/oh-my-zsh.sh
 # For a full list of active aliases, run `alias`.
 
 # To customize prompt, run `p10k configure` or edit POWERLEVEL9K_CONFIG_FILE.
-[[ ! -f "$POWERLEVEL9K_CONFIG_FILE" ]] || source "$POWERLEVEL9K_CONFIG_FILE"
+[[ -f "$POWERLEVEL9K_CONFIG_FILE" ]] && source "$POWERLEVEL9K_CONFIG_FILE"
 
 # Include hidden files/directories in tab completion.
 setopt globdots
@@ -137,10 +133,10 @@ if [[ $(uname) == 'Darwin' ]]; then
     export EDITOR='/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl -nw'
 fi
 
-source "${BUBDOT}/base/fzf/fzf.zsh"
-source "${BUBDOT}/base/aliases/aliases.zsh"
+source "${BUBASH_HOME}/base/fzf/fzf.zsh"
+source "${BUBASH_HOME}/base/aliases/aliases.zsh"
 
-[[ ! -f "${HOME}/.zshrc-local" ]] || source "${HOME}/.zshrc-local"
+[[ -f "${HOME}/.zshrc-local" ]] && source "${HOME}/.zshrc-local"
 
 # git_ls_dir_fzf() { LBUFFER+=$(git ls-files | sed 's,/[^/]*$,,' | sort | uniq | fzf) }
 # zle -N git_ls_dir_fzf

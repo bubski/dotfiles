@@ -9,10 +9,10 @@ FMT_RESET=$(echo -e '\033[1;0m')
 set -e
 
 main() {
-    check_dependencies_$(uname -s)
+    "check_dependencies_$(uname -s)"
 
-    local repo_url='https://github.com/bubski/dotfiles.git'
-    local clone_path="${HOME}/.local/lib/bubdot"
+    local repo_url="https://github.com/bubski/dotfiles.git"
+    local clone_path="${HOME}/.local/lib/bubash"
 
     git clone --recurse-submodules --shallow-submodules "${repo_url}" "${clone_path}"
     "${clone_path}/tools/activate"
@@ -26,12 +26,13 @@ print_error() {
 
 check_dependencies_Linux() {
     assert_installed \
-        'zsh' "$(apt_install_cmd zsh)" \
-        'git' "$(apt_install_cmd git)" \
-        'stow' "$(apt_install_cmd stow)"
+        "zsh" "$(apt_install_cmd zsh)" \
+        "git" "$(apt_install_cmd git)" \
+        "stow" "$(apt_install_cmd stow)"
 }
 
 check_dependencies_Darwin() {
+    # TODO
     true
 }
 
