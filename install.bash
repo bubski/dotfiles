@@ -9,7 +9,7 @@ FMT_RESET=$(echo -e '\033[1;0m')
 set -e
 
 main() {
-    assert_installed git zsh stow
+    check_dependencies_$(uname -s)
 
     local repo_url='https://github.com/bubski/dotfiles.git'
     local clone_path="${HOME}/.local/lib/bubdot"
@@ -52,9 +52,41 @@ print_error() {
     echo "${FMT_BOLD}${FMT_RED}Error: $@${FMT_RESET}"
 }
 
+check_dependencies_Linux() {
+    assert_installed \
+        'zsh' "$(apt_install_cmd git)" \
+        'git' "$(apt_install_cmd git)" \
+        'stow' "$(apt_install_cmd stow)"
+}
+
+check_dependencies_Darwin() {
+    true
+}
+
+prompt_and_do() {
+    read -r -p "$1 [y/N] " REPLY
+    shift
+    case "$REPLY" in [yY]|[yY][eE][sS]) eval "$*" ;;
+                                     *) exit 1 ;;
+    esac
+}
+
+handle_not_installed() {
+    print_error "${cmd} is not installed."
+}
+
 assert_installed() {
-    for cmd in "$@"; do
-        command_exists "${cmd}" || bail "${cmd} is not installed."
+    while [ $# -gt 1 ]; do
+        local cmd=$1
+        local install_cmd=$2
+        shift 2
+
+        command_exists "${cmd}" && continue
+        print_error "${cmd} is not installed."
+
+        prompt_and_do \
+            "Do you want to install ${cmd} via ${FMT_YELLOW}${install_cmd}${FMT_RESET}?" \
+            "${install_cmd}"
     done
 }
 
@@ -65,6 +97,10 @@ command_exists() {
 bail() {
     print_error "$@"
     exit 1
+}
+
+apt_install_cmd() {
+    echo "sudo bash -c 'apt update && apt install -y $@'"
 }
 
 main
