@@ -1,8 +1,8 @@
-fmt_red=$(printf '\033[31m')
-fmt_green=$(printf '\033[32m')
-fmt_yellow=$(printf '\033[33m')
-fmt_bold=$(printf '\033[1m')
-fmt_reset=$(printf '\033[0m')
+FMT_RED=$(echo -e '\e[31m')
+FMT_GREEN=$(echo -e '\e[32m')
+FMT_YELLOW=$(echo -e '\e[33m')
+FMT_BOLD=$(echo -e '\e[1m')
+FMT_RESET=$(echo -e '\e[0m')
 
 set -e
 
@@ -47,11 +47,7 @@ should_skip() {
 }
 
 print_error() {
-    printf '%sError: %s%s\n' "${fmt_bold}${fmt_red}" "$*" "${fmt_reset}" >&2
-}
-
-print_error() {
-    printf '%sError: %s%s\n' "${fmt_bold}${fmt_red}" "$*" "${fmt_reset}" >&2
+    echo "${FMT_BOLD}${FMT_RED}Error: $@${FMT_RESET}"
 }
 
 assert_installed() {
