@@ -15,6 +15,11 @@ assert_root() {
     [[ $EUID -eq 0 ]] || bail 'Must run as root.'
 }
 
+bail() {
+    echo "$@"
+    exit 1
+}
+
 install_if_needed() {
     command -v "$cmd" $>/dev/null || apt install -y "$cmd"
 }
