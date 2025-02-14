@@ -3,34 +3,38 @@
 FMT_CYAN=$(echo -e '\e[36m')
 FMT_RESET=$(echo -e '\e[0m')
 
+main() {
+    sudo apt update
+
+    packages=(
+        'bat'
+        'curl'
+        'fd-find'
+        'fzf'
+        'htop'
+        'nano'
+        'neofetch'
+        'ripgrep'
+        'tmux'
+        'tree'
+    )
+    sudo apt install -y "${packages[@]}"
+
+    symlink_fd_find
+    symlink_bat
+}
+
 symlink_fd_find() {
     # The binary is called fdfind as the binary name fd is already used by another package.
-    local cmd="sudo ln -s '$(which fdfind)' /usr/local/bin/fd"
+    local cmd="sudo ln -s $(printf %q "$(which fdfind)") /usr/local/bin/fd"
     echo "${FMT_CYAN}${cmd}${FMT_RESET}"
     sudo ${cmd}
 }
 
 symlink_bat() {
-    local cmd="sudo ln -s '$(which batcat)' /usr/local/bin/bat"
+    local cmd="sudo ln -s $(printf %q "$(which batcat)") /usr/local/bin/bat"
     echo "${FMT_CYAN}${cmd}${FMT_RESET}"
     sudo ${cmd}
 }
 
-sudo apt update
-
-packages=(
-    'bat'
-    'curl'
-    'fd-find'
-    'fzf'
-    'htop'
-    'nano'
-    'neofetch'
-    'ripgrep'
-    'tmux'
-    'tree'
-)
-sudo apt install -y "${packages[@]}"
-
-symlink_fd_find
-symlink_bat
+main "$@"
