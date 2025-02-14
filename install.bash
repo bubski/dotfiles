@@ -4,107 +4,69 @@ fmt_yellow=$(printf '\033[33m')
 fmt_bold=$(printf '\033[1m')
 fmt_reset=$(printf '\033[0m')
 
-clone_path="${HOME}/.dotfiles"
-
-command_exists() {
-    command -v "$@" &>/dev/null
-}
-
-print_error() {
-    printf '%sError: %s%s\n' "${fmt_bold}${fmt_red}" "$*" "$fmt_reset" >&2
-}
-
-bail_with_message() {
-    print_error "$@"
-    exit 1
-}
-
-user_can_sudo() {
-    command_exists 'sudo' || bail_with_message 'sudo not installed.'
-    ! LANG='' sudo -n -v 2>&1 | grep -q "may not run sudo"
-}
-
-assert_user_can_sudo() {
-    user_can_sudo || bail_with_message "Current user (${USER}) cannot sudo."
-}
-
-install_tool() {
-    sudo whoami
-    sudo echo "$@"
-}
-
-ensure_command_exists_single() {
-    if ! command_exists "$1"; then
-        install_tool "$1"
-    fi
-}
-
-ensure_command_exists() {
-    for cmd in "$@"; do
-        ensure_command_exists_single "$cmd"
-    done
-}
-
-assert_commands_exists() {
-    for cmd in "$@"; do
-        command_exists "$cmd" || {
-            print_error "${cmd} not installed" >&2
-            exit 1
-        }
-    done
-}
-
-install_if_needed() {
-    for cmd in "$@"; do
-        command_exists "$cmd" ||
-            sudo apt install -y "$@" ||
-            bail_with_message "Failed to install ${cmd}."
-    done
-}
-
-_stow() {
-    stow "$@" -v -d "$clone_path" -t "$HOME" 'stow' "stow-$(uname)"
-}
-
-do_stow() {
-    mkdir ~/.config
-    mkdir -p ~/.local/bin
-    _stow
-}
-
-do_unstow() {
-    _stow -D
-}
+set -e
 
 main() {
-    local repo_url
-    local tools
+    assert_installed git zsh stow
 
-    repo_url='https://github.com/bubski/dotfiles.git'
-    tools=(
-        'git'
-        'stow'
-        'zsh'
-    )
+    local repo_url='https://github.com/bubski/dotfiles.git'
+    local clone_path="${HOME}/.local/lib/bubdot"
 
-    assert_user_can_sudo
+    git clone --recurse-submodules --shallow-submodules "${repo_url}" "${clone_path}"
 
-    install_if_needed "${tools[@]}"
+    cd "${clone_path}/stow"
+    for path in */stow.conf; do
+        do_stow "${path}"
+    done
 
-    git clone --recurse-submodules --shallow-submodules "$repo_url" "$clone_path" || bail_with_message "Failed to clone repo."
-
-    do_stow
-    stow -d "$clone_path" -t "$HOME" 'stow' "stow-$(uname)" || bail_with_message 'Stow failed.'
-
-    sudo chsh -s "$(command -v zsh)" "$USER" || bail_with_message "Changing default shell failed."
+    sudo chsh -s "$(command -v zsh)" "${USER}" || bail "Changing default shell failed."
 
     echo "${FMT_GREEN}Installation complete.${FMT_RESET}"
     SHELL=$(command -v zsh) zsh
 }
 
-if [[ -z "$@" ]]
-then
-    main
-else
-    "$*"
-fi
+do_stow() {
+    while IFS='=' read -r key value; do
+        declare "CFG_${key}"="${value}"
+    done < "$1"
+
+    if should_skip; then return 0; fi
+
+    [[ -n "${CFG_MKDIR}" ]] && mkdir -p "${HOME}/${CFG_MKDIR}"
+
+    local package=$(dirname "$1")
+    stow -t "${HOME}" "${package}" --ignore='stow\.conf'
+}
+
+should_skip() {
+    case $(uname -s) in
+      Linux) [[ "${CFG_LINUX}" != 1 ]] ;;
+      Darwin) [[ "${CFG_MAC}" != 1 ]] ;;
+      *) bail "Unexpected uname: $os" ;;
+    esac
+}
+
+print_error() {
+    printf '%sError: %s%s\n' "${fmt_bold}${fmt_red}" "$*" "${fmt_reset}" >&2
+}
+
+print_error() {
+    printf '%sError: %s%s\n' "${fmt_bold}${fmt_red}" "$*" "${fmt_reset}" >&2
+}
+
+assert_installed() {
+    for cmd in "$@"; do
+        command_exists "${cmd}" || bail "${cmd} is not installed."
+    done
+}
+
+command_exists() {
+    command -v "$@" &>/dev/null
+}
+
+bail() {
+    print_error "$@"
+    exit 1
+}
+
+main

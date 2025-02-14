@@ -1,12 +1,12 @@
 [[ "$TERM" == 'xterm-256color' || "$TERM" == 'tmux-256color' ]] || echo "\e[93mPrompt may not look right: 'TERM=$TERM'.\nExecute: 'export TERM=xterm-256color' to fix.\e[0m" >&2
 
-export BUB_DOT="${HOME}/.config/bubski-dotfiles"
+export BUBDOT="${HOME}/.local/lib/bubdot"
 
 bubdot::update() {
-    "$(git -C ${BUB_DOT} rev-parse --show-toplevel)/tools/bubdot-update" && exec zsh
+    "$(git -C "${BUBDOT}" rev-parse --show-toplevel)/tools/bubdot-update" && exec zsh
 }
 
-export POWERLEVEL9K_CONFIG_FILE="${BUB_DOT}/p10k/p10k.zsh"
+export POWERLEVEL9K_CONFIG_FILE="${BUBDOT}/base/p10k/p10k.zsh"
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -19,7 +19,9 @@ export POWERLEVEL9K_CONFIG_FILE="${BUB_DOT}/p10k/p10k.zsh"
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="${BUB_DOT}/oh-my-zsh"
+export ZSH="${BUBDOT}/base/oh-my-zsh"
+# Would you like to use another custom folder than $ZSH/custom?
+ZSH_CUSTOM="${BUBDOT}/base/oh-my-zsh-custom"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -95,9 +97,6 @@ export SAVEHIST=50000 # Refers to the number of commands that are stored in the 
 export HISTSIZE=50000 # Refers to the number of commands that are loaded into memory from the history file
 # HISTFILE # Refers to the path/location of the history file
 
-# Would you like to use another custom folder than $ZSH/custom?
-ZSH_CUSTOM="${BUB_DOT}/oh-my-zsh-custom"
-
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
@@ -138,8 +137,8 @@ if [[ $(uname) == 'Darwin' ]]; then
     export EDITOR='/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl -nw'
 fi
 
-source "${BUB_DOT}/fzf/fzf.zsh"
-source "${BUB_DOT}/aliases/aliases.zsh"
+source "${BUBDOT}/fzf/fzf.zsh"
+source "${BUBDOT}/aliases/aliases.zsh"
 
 [[ ! -f "${HOME}/.zshrc-local" ]] || source "${HOME}/.zshrc-local"
 
