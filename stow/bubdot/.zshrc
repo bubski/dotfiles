@@ -137,8 +137,8 @@ if [[ $(uname) == 'Darwin' ]]; then
     export EDITOR='/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl -nw'
 fi
 
-source "${BUBDOT}/fzf/fzf.zsh"
-source "${BUBDOT}/aliases/aliases.zsh"
+source "${BUBDOT}/base/fzf/fzf.zsh"
+source "${BUBDOT}/base/aliases/aliases.zsh"
 
 [[ ! -f "${HOME}/.zshrc-local" ]] || source "${HOME}/.zshrc-local"
 
