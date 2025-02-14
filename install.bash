@@ -54,7 +54,7 @@ print_error() {
 
 check_dependencies_Linux() {
     assert_installed \
-        'zsh' "$(apt_install_cmd git)" \
+        'zsh' "$(apt_install_cmd zsh)" \
         'git' "$(apt_install_cmd git)" \
         'stow' "$(apt_install_cmd stow)"
 }
