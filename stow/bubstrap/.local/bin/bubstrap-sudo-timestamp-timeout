@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 fmt_yellow='\033[33m'
 fmt_green='\033[32m'

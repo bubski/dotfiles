@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 rm -fr ~/Library/Developer/Xcode/DerivedData
 rm -fr ~/Library/Caches/com.apple.dt.Xcode
