@@ -32,8 +32,9 @@ check_dependencies_Linux() {
 }
 
 check_dependencies_Darwin() {
-    # TODO
-    true
+    assert_installed \
+         "brew" '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"' \
+         "stow" "brew install stow"
 }
 
 prompt_and_do() {
